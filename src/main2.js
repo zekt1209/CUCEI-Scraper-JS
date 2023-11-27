@@ -30,7 +30,7 @@ fetchData(url).then( (res) => {
         let title = $(this).find('td').text();
         let titleSplitted = title.split();
 
-        console.log(title);
+        // console.log(title);
     }); 
 } );
 
@@ -40,39 +40,46 @@ const mainFunc = async () => {
   const url = "https://www.iban.com/exchange-rates";
   // fetch html data from iban website
   let res = await fetchData(url);
+
   if(!res.data){
     console.log("Invalid data Obj");
     return;
   }
+
   const html = res.data;
   let dataObj = new Object();
+
   // mount html page to the root element
   const $ = cheerio.load(html);
 
-//   let dataObj = new Object();
+  // let dataObj = new Object();
   const statsTable = $('.table.table-bordered.table-hover.downloads > tbody > tr');
+
   //loop through all table rows and get table data
   statsTable.each(function() {
     let title = $(this).find('td').text(); // get the text in all the td elements
     let newStr = title.split("\t"); // convert text (string) into an array
     newStr.shift(); // strip off empty array element at index 0
     formatStr(newStr, dataObj); // format array string and store in an object
-  });
+});
 
+ console.log(dataObj)
   return dataObj;
 }
 
-mainFunc().then((res) => {
-    // start worker
-    const worker = new Worker(workDir); 
-    console.log("Sending crawled data to dbWorker...");
-    // send formatted data to worker thread 
-    worker.postMessage(res);
-    // listen to message from worker thread
-    worker.on("message", (message) => {
-        console.log(message)
-    });
-});
+// mainFunc().then((res) => {
+//     // start worker
+//     const worker = new Worker(workDir); 
+//     console.log("Sending crawled data to dbWorker...");
+//     // send formatted data to worker thread 
+//     worker.postMessage(res);
+//     // listen to message from worker thread
+//     worker.on("message", (message) => {
+//         console.log(message)
+//     });
+// });
+
+mainFunc();
 
 
 function formatStr(arr, dataObj){
