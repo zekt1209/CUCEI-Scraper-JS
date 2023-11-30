@@ -72,16 +72,16 @@ const crawlScpecificDomSctions = async (url) => {
             // Insertamos el objeto al array
             jobsArray.push(obj);
         });
-        // console.log(jobsArray);
+        console.log(jobsArray);
         // console.log('Numero de posiciones de trabajo: ' + jobsArray.length);
         const myJsonString = JSON.stringify(jobsArray);
         // console.log(myJsonString);
 
-        fs.writeFile('informaticJobs.csv', myJsonString, (error) => {
-            if (error) {
-                console.log(`Error en la funcion writeFile: ${error}`);
-            }
-        });
+        // fs.writeFile('informaticJobs.csv', myJsonString, (error) => {
+        //     if (error) {
+        //         console.log(`Error en la funcion writeFile: ${error}`);
+        //     }
+        // });
 
         return myJsonString;
         
